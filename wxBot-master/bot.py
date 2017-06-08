@@ -81,9 +81,11 @@ class TulingWXBot(WXBot):
 
                 is_at_me = False
                 for detail in msg['content']['detail']:
-                    if detail['type'] == 'at':
+                    # if detail['type'] == 'at':
                         for k in my_names:
-                            if my_names[k] and my_names[k] == detail['value']:
+                            print my_names[k]
+                            print detail['value']
+                            if my_names[k] and my_names[k] in detail['value']:
                                 is_at_me = True
                                 break
                 if is_at_me:
