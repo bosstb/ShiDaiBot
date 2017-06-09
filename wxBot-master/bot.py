@@ -4,9 +4,13 @@
 from wxbot import *
 import ConfigParser
 import json
+import time
+import thread
 
 
 class TulingWXBot(WXBot):
+    thread_id = ''
+    push_thread = None
     def __init__(self):
         WXBot.__init__(self)
 
@@ -96,6 +100,18 @@ class TulingWXBot(WXBot):
                     else:
                         reply += u"对不起，只认字，其他杂七杂八的我都不认识，,,Ծ‸Ծ,,"
                     self.send_msg_by_uid(reply, msg['user']['id'])
+                    if self.push_thread == None:
+                        self.push_thread = thread.start_new_thread(self.pushtest(msg))
+                    else:
+                        self.push_thread.quit()
+
+    def pushtest(self, msg):
+        for a in range(1, 5):
+            time.sleep(5)
+            self.send_msg_by_uid("Test", msg['user']['id'])
+
+
+
 
 
 def main():
