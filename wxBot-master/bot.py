@@ -128,12 +128,12 @@ class TulingWXBot(WXBot):
                     now = items.get(item).get("ticker").get("last")
                     last = record[len(record) - 3].get(item).get("ticker").get("last")
                     av = (now - last) / last
-                    if av >= 0.015:
+                    if av >= 0.03:
                         info.append(item + ": Now:[" + str(now) + "] 30sec ago:[" + str(last) + "] Change:[" + str("%.2f%%" % (av * 100)) + "]--------")
             record.append(items)
             if len(info) > 0:
                 print info
-                self.send_msg_by_uid(info, msg['user']['id'])
+                self.send_msg_by_uid(str(info), msg['user']['id'])
             time.sleep(15)
 
 
