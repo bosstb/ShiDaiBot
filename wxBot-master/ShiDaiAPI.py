@@ -1,9 +1,13 @@
-
+# -*- coding: utf-8 -*-
 import json
 import requests
+import time
+
 
 def getAllPairs():
+    record = []
     while True:
+        info = []
         headers = {"Accept":"text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
 "Accept-Encoding":"gzip, deflate, sdch",
 "Accept-Language":"zh-CN,zh;q=0.8",
@@ -17,8 +21,19 @@ def getAllPairs():
             'http://api.btc38.com/v1/ticker.php?c=all&mk_type=cny', headers = headers)
         print r.text
         items = json.loads(r.text)
-
-        for item in items:
-            print item
+        print items
+        if len(record) >= 2:
+            for item in items:
+                print items.get(item).get("ticker").get("buy")
+                now = items.get(item).get("ticker").get("last")
+                last = record[len(record) - 3].get(item).get("ticker").get("last")
+                av = (now - last)/last
+                if av >=0.015:
+                    info.append(item +  ": 现价【" + now + "】 30秒前价【" + last + "】，波动幅度【" + av + "】--------")
+        record.append(items)
+        if len(info) > 0:
+            print info
+            return info
+        time.sleep(15)
 
 getAllPairs()
